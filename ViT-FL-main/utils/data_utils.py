@@ -7,7 +7,7 @@ from PIL import Image
 from skimage.transform import resize
 from timm.data import Mixup
 from timm.data import create_transform
-from timm.data.transforms import _pil_interp
+
 
 
 import torch
