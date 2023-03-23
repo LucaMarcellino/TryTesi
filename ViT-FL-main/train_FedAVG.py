@@ -171,7 +171,7 @@ def main():
 
     parser.add_argument("--img_size", default=224, type=int, help="Final train resolution")
     parser.add_argument("--batch_size", default=32, type=int,  help="Local batch size for training.")
-    parser.add_argument("--gpu_ids", type=str, default='2', help="gpu ids: e.g. 0  0,1,2")
+    parser.add_argument("--gpu_ids", type=str, default='0', help="gpu ids: e.g. 0  0,1,2")
 
     parser.add_argument('--seed', type=int, default=42, help="random seed for initialization") #99999
 
