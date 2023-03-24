@@ -188,7 +188,7 @@ def main():
     parser.add_argument("--E_epoch", default=1, type=int, help="Local training epoch in FL")
     parser.add_argument("--max_communication_rounds", default=100, type=int,  help="Total communication rounds")
     parser.add_argument("--num_local_clients", default=-1, choices=[10, -1], type=int, help="Num of local clients joined in each FL train. -1 indicates all clients")
-    parser.add_argument("--split_type", type=str, choices=["split_1", "split_2", "split_3", "real", "central"], default="split_3", help="Which data partitions to use")
+    parser.add_argument("--split_type", type=str, choices=["split_1", "split_2", "split_3", "real", "central"], default="split_1", help="Which data partitions to use")
 
 
     args = parser.parse_args()
