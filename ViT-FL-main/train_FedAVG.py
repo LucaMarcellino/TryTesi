@@ -155,7 +155,7 @@ def main():
     # General DL parameters
     parser.add_argument("--net_name", type = str, default="ViT-small",  help="Basic Name of this run with detailed network-architecture selection. ")
     parser.add_argument("--FL_platform", type = str, default="ViT-FedAVG", choices=[ "Swin-FedAVG", "ViT-FedAVG", "Swin-FedAVG", "EfficientNet-FedAVG", "ResNet-FedAVG"],  help="Choose of different FL platform. ")
-    parser.add_argument("--dataset", choices=["cifar10", "Retina"], default="Retina", help="Which dataset.")
+    parser.add_argument("--dataset", choices=["cifar10", "Retina"], default="CelebA", help="Which dataset.")
     parser.add_argument("--data_path", type=str, default='./data/', help="Where is dataset located.")
 
     parser.add_argument("--save_model_flag",  action='store_true', default=False,  help="Save the best model for each client.")
