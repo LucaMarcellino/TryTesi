@@ -9,7 +9,7 @@ import torchvision.models as torch_models
 from efficientnet_pytorch import EfficientNet
 from models import build_model
 from torch.nn import Linear
-from utils.config_swin import get_config
+#from utils.config_swin import get_config
 
 def print_options(args, model):
     message = ''
