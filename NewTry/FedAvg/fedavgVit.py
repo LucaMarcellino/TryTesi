@@ -17,7 +17,7 @@ from timm.models.vision_transformer import vit_small_patch16_224
 
 
 
-if __name__ == 'main':
+def main():
     
     args = args_parser()
     
@@ -86,7 +86,8 @@ if __name__ == 'main':
     train_csv.to_csv(f'FedAVG_{args.local_ep}_local_ep_Norm:{args.norm_layer}_iid:{args.iid}_lr:{args.lr}_mom:{args.momentum}_epochs:{args.epochs}.csv', index = False)
         
         
+
     
-    
-    
+if __name__ == "__main__":
+    main()
     
