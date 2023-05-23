@@ -258,7 +258,7 @@ class Transformer(nn.Module):
 
 
 class VisionTransformer(nn.Module):
-    def __init__(self, config, img_size=32, num_classes=10, zero_head=False, vis=False):
+    def __init__(self, config=configs.get_b16_config(), img_size=32, num_classes=10, zero_head=False, vis=False):
         super(VisionTransformer, self).__init__()
         self.num_classes = num_classes
         self.zero_head = zero_head
