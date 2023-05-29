@@ -14,6 +14,7 @@ from models import ResNet50
 from torchvision import models
 from reproducibility import seed_worker,make_it_reproducible
 from timm.models.vision_transformer import vit_small_patch16_224
+import timm
 from modelVit import VisionTransformer
 
 
@@ -41,9 +42,11 @@ def main():
     
     print('we use ViT small')
     pre = vit_small_patch16_224(pretrained=True)
-    w1 = pre.state_dict()
-    global_net = VisionTransformer()
-    global_net.load_state_dict(w1)
+    pretrained_model = timm.create_model('vit_base_patch16_224', pretrained=True)
+
+    # New model definition (example: ViT with 'vit_small_patch16_224' architecture)
+    global_net = timm.create_model('vit_small_patch16_224', pretrained=False)
+    global_net.load_state_dict(pretrained_model.state_dict())
     global_net.to(device)
     
     for epoch in tqdm(range(args.epochs)):
