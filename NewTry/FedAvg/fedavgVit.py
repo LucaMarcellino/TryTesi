@@ -40,7 +40,10 @@ def main():
     
     
     print('we use ViT small')
+    pre = vit_small_patch16_224(pretrained=True)
+    w1 = pre.state_dict()
     global_net = VisionTransformer()
+    global_net.load_state_dict(w1)
     global_net.to(device)
     
     for epoch in tqdm(range(args.epochs)):
