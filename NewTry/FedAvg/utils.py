@@ -31,7 +31,7 @@ def get_dataset(args):
     
     #Normalize used with mean and stds of Cifar10
     apply_transform = transforms.Compose(
-        [transforms.Resize((224,224)),
+        [#transforms.Resize((224,224)),
          transforms.RandomResizedCrop(32),
          transforms.RandomHorizontalFlip(),
          transforms.ToTensor(),
