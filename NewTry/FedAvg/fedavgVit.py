@@ -41,7 +41,9 @@ def main():
     
     
     print('we use ViT small')
-    pre = vit_small_patch16_224(pretrained=True)
+    
+    #global_net = VisionTransformer()
+    #global_net.to(device)
     pretrained_model = timm.create_model('vit_base_patch16_224', pretrained=True)
 
     # New model definition (example: ViT with 'vit_small_patch16_224' architecture)
