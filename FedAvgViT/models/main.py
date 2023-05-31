@@ -233,8 +233,8 @@ def init_wandb(args, alpha=None, run_id=None):
     if args.server_momentum > 0:
         job_name = job_name + '_b' + str(args.server_momentum)
 
-    if args.client_algorithm is not None:
-        job_name = job_name + '_' + args.client_algorithm
+    #if args.client_algorithm is not None:
+    #    job_name = job_name + '_' + args.client_algorithm
     
 
     if args.mixup:
