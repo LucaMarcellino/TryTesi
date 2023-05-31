@@ -134,4 +134,24 @@ def parse_args():
                         type=str,
                         choices=SIM_TIMES,
                         default='large')
+    
+    
+    ## LOAD CHECKPOINT AND RESTART OPTIONS ##
+    parser.add_argument('-load',
+                        action='store_true',
+                        default=False)
+    parser.add_argument('--wandb-run-id',
+                        help='wandb run id for resuming run',
+                        type=str,
+                        default=None)
+    parser.add_argument('-restart',
+                        help='True if download model from wandb run but restart experiment with new wandb id',
+                        action='store_true',
+                        default=False)
+    parser.add_argument('--restart-round',
+                        help='Round to be restarted (default: last executed round)',
+                        type=int,
+                        default=None)
+    
+    
     return parser.parse_args()
