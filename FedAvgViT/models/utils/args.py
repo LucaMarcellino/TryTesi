@@ -16,7 +16,7 @@ def parse_args():
                     choices=DATASETS,
                     default='cifar10')
     
-    parser.add_argument('--seed',
+    parser.add_argument('-seed',
                         type=int,
                         help='Choose the seed for reproducibility',
                         default=42)
