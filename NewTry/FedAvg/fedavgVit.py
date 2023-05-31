@@ -41,18 +41,16 @@ def main():
     
     
     print('we use ViT small')
-    """
-    global_net = VisionTransformer()
-    global_net.to(device)
-    """
+    if args.pretrain == 0:
+        global_net = VisionTransformer()
+        
     
+    elif args.pretrain ==1:
+        pretrained_model = timm.create_model('vit_small_patch16_224', pretrained=True)
+        global_net = timm.create_model('vit_small_patch16_224', pretrained=False)
+        global_net.load_state_dict(pretrained_model.state_dict())
+        global_net.head = nn.Linear(global_net.head.in_features, 10)
     
-    pretrained_model = timm.create_model('vit_small_patch16_224', pretrained=True)
-
-    
-    global_net = timm.create_model('vit_small_patch16_224', pretrained=False)
-    global_net.load_state_dict(pretrained_model.state_dict())
-    global_net.head = nn.Linear(global_net.head.in_features, 10)
     
     global_net.to(device)
     
@@ -90,7 +88,7 @@ def main():
         # print global training loss after every 'i' rounds
 
 
-        print(f' \n Results after {args.epochs} global rounds of training:')
+        print(f' \n Results after {epoch} global rounds of training:')
         print("|---- Avg Test Loss: {:.2f}".format(sum(global_losses) / len(global_losses)))
         print("|---- Test Accuracy: {:.2f}%".format((correct / total)*100))
 
