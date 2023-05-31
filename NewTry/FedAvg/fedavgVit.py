@@ -41,17 +41,19 @@ def main():
     
     
     print('we use ViT small')
-    
+    """
     global_net = VisionTransformer()
     global_net.to(device)
     """
+    
+    
     pretrained_model = timm.create_model('vit_base_patch16_224', pretrained=True)
 
     # New model definition (example: ViT with 'vit_small_patch16_224' architecture)
     global_net = timm.create_model('vit_small_patch16_224', pretrained=False)
     global_net.load_state_dict(pretrained_model.state_dict())
     global_net.head = nn.Linear(global_net.head.in_features, 10)
-    """
+    
     global_net.to(device)
     
     for epoch in tqdm(range(args.epochs)):
