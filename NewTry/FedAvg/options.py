@@ -21,7 +21,7 @@ def args_parser():
                         help='SGD momentum (default: 0.9)')
     parser.add_argument('--alpha_b', type=float, default=0.9)
     parser.add_argument('--alpha_g', type=float, default=0.1)
-    parser.add_argument('--pretrained', type=int, default=0)
+    parser.add_argument('--pretrain', type=int, default=0)
 
     # model arguments
     parser.add_argument('--model', type=str, default='ResNet50', help='model name')
