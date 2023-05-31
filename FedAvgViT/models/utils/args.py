@@ -49,10 +49,9 @@ def parse_args():
                         help='algorithm used for server aggregation;',
                         choices=SERVER_ALGORITHMS,
                         default='fedavg')
-    #parser.add_argument('--client-algorithm',
-    #                    help='algorithm used on the client-side for regularization',
-    #                    choices=CLIENT_ALGORITHMS,
-    #                    default=None)
+    parser.add_argument('--client-algorithm',
+                        help='algorithm used on the client-side for regularization',
+                        default=None)
     parser.add_argument('--alpha',
                         help='alpha value to retrieve corresponding file',
                         type=float,
