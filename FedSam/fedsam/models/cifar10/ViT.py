@@ -260,9 +260,9 @@ class Transformer(nn.Module):
         return encoded, attn_weights
 
 
-class VisionTransformer(nn.Module):
+class ClientModel(nn.Module):
     def __init__(self, config=configs.get_b16_config(), img_size=224, num_classes=10, zero_head=False, vis=False):
-        super(VisionTransformer, self).__init__()
+        super(ClientModel, self).__init__()
         self.num_classes = num_classes
         self.zero_head = zero_head
         self.classifier = config.classifier
