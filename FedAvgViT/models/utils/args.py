@@ -14,8 +14,7 @@ def parse_args():
                     help='name of dataset;',
                     type=str,
                     choices=DATASETS,
-                    default='cifar10',
-                    help='Choose your dataset')
+                    default='cifar10')
     
     parser.add_argument('--seed',
                         type=int,
