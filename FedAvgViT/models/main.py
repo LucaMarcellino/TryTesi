@@ -16,7 +16,7 @@ from datetime import datetime
 import metrics.writer as metrics_writer
 from baseline_constants import MAIN_PARAMS, MODEL_PARAMS, ACCURACY_KEY, CLIENT_PARAMS_KEY, CLIENT_GRAD_KEY, \
     CLIENT_TASK_KEY
-from utils.args import parse_args, check_args
+from utils.args import parse_args
 from utils.cutout import Cutout
 from utils.main_utils import *
 from utils.model_utils import read_data
