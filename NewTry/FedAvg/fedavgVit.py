@@ -15,7 +15,7 @@ from torchvision import models
 from reproducibility import seed_worker,make_it_reproducible
 from timm.models.vision_transformer import vit_small_patch16_224
 import timm
-from vit2 import VisionTransformer
+from modelVit import VisionTransformer
 
 
 
