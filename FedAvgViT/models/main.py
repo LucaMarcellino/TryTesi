@@ -353,4 +353,7 @@ def print_metrics(metrics, weights, fp, prefix=''):
         # fp.write("Clients losses:", ordered_metric)
         metrics_values.append(np.average(ordered_metric, weights=ordered_weights))
     return metrics_values
+
+if __name__ == '__main__':
+    main()
         
