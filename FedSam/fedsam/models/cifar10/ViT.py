@@ -19,6 +19,9 @@ from scipy import ndimage
 
 import configs 
 
+from timm.models.vision_transformer import vit_small_patch16_224
+import timm
+
 
 logger = logging.getLogger(__name__)
 
@@ -263,7 +266,7 @@ class VisionTransformer(nn.Module):
         self.num_classes = num_classes
         self.zero_head = zero_head
         self.classifier = config.classifier
-        self.transformer =timm.create_model('vit_small_patch16_224', pretrained=True)
+        self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
         self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
 
         """
