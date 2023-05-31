@@ -87,7 +87,7 @@ def main():
         # Create client model, and share params with servers model
         client_model = ClientModel(*model_params, device)
     else:
-        client_model = ClientModel()
+        client_model = ClientModel(device=device)
         
     if args.load and wandb.run.resumed:  # load model from checkpoint
         client_model, checkpoint, ckpt_path_resumed = resume_run(client_model, args, wandb.run)
