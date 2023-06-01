@@ -77,14 +77,18 @@ def main():
     eval_every = args.eval_every if args.eval_every != -1 else tup[1]
     clients_per_round = args.clients_per_round if args.clients_per_round != -1 else tup[2]
 
-    model_params = MODEL_PARAMS[model_path]
-    if args.lr != -1:
-        model_params_list = list(model_params)
-        model_params_list[0] = args.lr
-        model_params = tuple(model_params_list)
+    if args.model == "cnn":
+        model_params = MODEL_PARAMS[model_path]
+        if args.lr != -1:
+            model_params_list = list(model_params)
+            model_params_list[0] = args.lr
+            model_params = tuple(model_params_list)
 
-    # Create client model, and share params with servers model
-    client_model = ClientModel(*model_params, device)
+        # Create client model, and share params with servers model
+        client_model = ClientModel(*model_params, device)
+    else:
+        client_model = ClientModel(device=device)
+        
     if args.load and wandb.run.resumed:  # load model from checkpoint
         client_model, checkpoint, ckpt_path_resumed = resume_run(client_model, args, wandb.run)
         if args.restart:    # start new wandb run
@@ -319,9 +323,9 @@ def init_wandb(args, alpha=None, run_id=None):
     run = wandb.init(
                 id = id,
                 # Set entity to specify your username or team name
-                entity="federated-learning",
+                entity="marcellinoluca96",
                 # Set the project where this run will be logged
-                project='fl_' + args.dataset,
+                project='ViT_' + args.dataset,
                 group=group_name,
                 # Track hyperparameters and run metadata
                 config=configuration,
