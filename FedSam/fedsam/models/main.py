@@ -323,9 +323,9 @@ def init_wandb(args, alpha=None, run_id=None):
     run = wandb.init(
                 id = id,
                 # Set entity to specify your username or team name
-                entity="federated-learning",
+                entity="marcellinoluca96",
                 # Set the project where this run will be logged
-                project='fl_' + args.dataset,
+                project='ViT_' + args.dataset,
                 group=group_name,
                 # Track hyperparameters and run metadata
                 config=configuration,
