@@ -40,8 +40,8 @@ class ClientDataset(Dataset):
 
         if train:
             self.train_transform = transforms.Compose([
-                                        #transforms.Resize((224,224)),
-                                        transforms.RandomCrop(32, padding=4),
+                                        transforms.Resize((224,224)),
+                                        transforms.RandomCrop(224, padding=4),
                                         transforms.RandomHorizontalFlip(),
                                         transforms.ToTensor(),
                                         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
@@ -52,7 +52,7 @@ class ClientDataset(Dataset):
         else:
             self.train_transform = None
             self.test_transform = transforms.Compose([
-                                        #transforms.Resize((224,224)),
+                                        transforms.Resize((224,224)),
                                         transforms.ToTensor(),
                                         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
                                     ])
