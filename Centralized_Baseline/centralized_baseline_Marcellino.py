@@ -54,13 +54,13 @@ for norm in norm_list:
                     g.manual_seed(seed)
 
                     trainloader = torch.utils.data.DataLoader(trainset,
-                                                        batch_size = 16,
+                                                        batch_size = 64,
                                                         shuffle = True,
                                                         num_workers = 2,
                                                         worker_init_fn = seed_worker,
                                                         generator = g)
                     testloader = torch.utils.data.DataLoader(testset,
-                                                    batch_size = 16,
+                                                    batch_size = 64,
                                                     shuffle = False,
                                                     num_workers = 2,
                                                     worker_init_fn = seed_worker,
