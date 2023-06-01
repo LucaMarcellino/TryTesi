@@ -269,6 +269,7 @@ class ClientModel(nn.Module):
         self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
         self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
         self.device = device
+        self.size = self.model_size()
 
         
         #self.transformer = Transformer(config, img_size, vis)
@@ -347,6 +348,12 @@ class ClientModel(nn.Module):
                 for bname, block in self.transformer.embeddings.hybrid_model.body.named_children():
                     for uname, unit in block.named_children():
                         unit.load_from(weights, n_block=bname, n_unit=uname)
+                        
+    def model_size(self):
+        tot_size = 0
+        for param in self.parameters():
+            tot_size += param.size()[0]
+        return tot_size
 
 
 CONFIGS = {
