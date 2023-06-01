@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('--batch_size',
                         type=int,
                         default=64)
-    parser.add_argument('pre_trained',
+    parser.add_argument('--pre_trained',
                         type=int,
                         help='0 no pretrained, 1 pretrained',
                         default= 1)
