@@ -9,12 +9,16 @@ def get_datasets(augmentation=False):
     testset = datasets.CIFAR10("./data", train=False, download=True)
 
     transform = transforms.Compose(
-        [transform.Resize((224,224)), transforms.ToTensor(), transforms.Normalize(cifar10_mean, cifar10_std),])
+        [transforms.Resize((224,224)), 
+         transforms.ToTensor(), 
+         transforms.Normalize(cifar10_mean, cifar10_std),])
     if augmentation:
         transform_train = transforms.Compose(
-            [transform.Resize((224,224)),
-            transforms.RandomCrop(224, padding=4), transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(), transforms.Normalize(cifar10_mean, cifar10_std)])
+            [transforms.Resize((224,224)),
+            transforms.RandomCrop(224, padding=4), 
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(), 
+            transforms.Normalize(cifar10_mean, cifar10_std)])
         trainset.transform = transform_train
     else:
         trainset.transform = transform
