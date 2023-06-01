@@ -267,7 +267,7 @@ class ClientModel(nn.Module):
         self.zero_head = zero_head
         self.classifier = config.classifier
         self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
-        self.head = nn.Linear(self.transformer.head.in_features, num_classes)
+        self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
         self.device = device
 
         
@@ -277,7 +277,6 @@ class ClientModel(nn.Module):
 
     def forward(self, x, labels=None):
         x = self.transformer(x)
-        print(x.shape)
         logits = self.head(x[:, 0])
 
         # if labels is not None:
@@ -292,7 +291,7 @@ class ClientModel(nn.Module):
         #     return loss
         # else:
         #     return logits, attn_weights
-        return logits
+        return x
 
     def load_from(self, weights):
         with torch.no_grad():
