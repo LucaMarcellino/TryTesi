@@ -27,8 +27,6 @@ criterion = nn.CrossEntropyLoss()
 
 output_metrics = dict()
 output_metrics["Epoch"] = list()
-output_metrics["Norm"] = list()
-output_metrics["Opt"] = list()
 output_metrics["Lr"] = list()
 output_metrics["Momentum"] = list()
 output_metrics["Weight_decay"] = list()
@@ -116,8 +114,6 @@ for norm in norm_list:
                             print("Epochs = {} | Train loss = {} | Test loss = {} | Test accuracy = {}".format(epoch + 1,train_loss_avg, test_loss_avg, test_accuracy))
                         
                         output_metrics["Epoch"].append(epoch + 1)
-                        output_metrics["Norm"].append(norm)
-                        output_metrics["Opt"].append(opt)
                         output_metrics["Lr"].append(lr)
                         output_metrics["Momentum"].append(momentum)
                         output_metrics["Weight_decay"].append(wd)
@@ -130,7 +126,7 @@ for norm in norm_list:
 
 
 output_data = pd.DataFrame(output_metrics)
-output_data.to_csv("Centralized_results_adam_Marcellino.csv", index = False)
+output_data.to_csv("Centralized_ViT_NoPretrained.csv", index = False)
 
                         
 
