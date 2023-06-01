@@ -117,8 +117,8 @@ for epoch in tqdm(range(epochs)):
         test_loss_avg = sum(test_loss) / len(test_loss)
         test_accuracy = correct / total
 
-    if epoch + 1 % 5 == 0:
-        print("Epochs = {} | Train loss = {} | Test loss = {} | Test accuracy = {}".format(epoch + 1,train_loss_avg, test_loss_avg, test_accuracy))
+    
+    print("Epochs = {} | Train loss = {} | Test loss = {} | Test accuracy = {}".format(epoch + 1,train_loss_avg, test_loss_avg, test_accuracy))
     
     output_metrics["Epoch"].append(epoch + 1)
     output_metrics["Lr"].append(lr)
