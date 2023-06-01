@@ -266,14 +266,14 @@ class ClientModel(nn.Module):
         self.num_classes = num_classes
         self.zero_head = zero_head
         self.classifier = config.classifier
-        self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
-        self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
+        #self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
+        #self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
         self.device = device
 
-        """
+        
         self.transformer = Transformer(config, img_size, vis)
         self.head = Linear(config.hidden_size, num_classes)
-        """
+        
 
     def forward(self, x, labels=None):
         x, attn_weights = self.transformer(x)
