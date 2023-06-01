@@ -19,6 +19,9 @@ from scipy import ndimage
 
 import configs 
 
+from timm.models.vision_transformer import vit_small_patch16_224
+import timm
+
 
 logger = logging.getLogger(__name__)
 
@@ -257,14 +260,15 @@ class Transformer(nn.Module):
         return encoded, attn_weights
 
 
-class VisionTransformer(nn.Module):
-    def __init__(self, config=configs.get_b16_config(), img_size=224, num_classes=10, zero_head=False, vis=False):
-        super(VisionTransformer, self).__init__()
+class ClientModel(nn.Module):
+    def __init__(self, device = None , config=configs.get_b16_config(), img_size=224, num_classes=10, zero_head=False, vis=False):
+        super(ClientModel, self).__init__()
         self.num_classes = num_classes
         self.zero_head = zero_head
         self.classifier = config.classifier
-        self.transformer =timm.create_model('vit_small_patch16_224', pretrained=True)
+        self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
         self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
+        self.device = device
 
         """
         self.transformer = Transformer(config, img_size, vis)
