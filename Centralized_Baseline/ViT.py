@@ -277,6 +277,7 @@ class ClientModel(nn.Module):
 
     def forward(self, x, labels=None):
         x = self.transformer(x)
+        print(x.shape())
         logits = self.head(x[:, 0])
 
         # if labels is not None:
