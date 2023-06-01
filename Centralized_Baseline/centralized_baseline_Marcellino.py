@@ -133,7 +133,7 @@ for epoch in tqdm(range(epochs)):
 
 
 output_data = pd.DataFrame(output_metrics)
-output_data.to_csv("Centralized_ViT_NoPretrained.csv", index = False)
+output_data.to_csv(f"Centralized_ViT_Pretrained:{args.pre_trained}_optimizer:{args.opt}_lr:{args.lr}_mom:{args.momentum}_epochs:{args.epochs}_wd:{args.wd}.csv', index = False.csv", index = False)
 
                         
 
