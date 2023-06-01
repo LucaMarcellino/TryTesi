@@ -267,7 +267,7 @@ class ClientModel(nn.Module):
         self.zero_head = zero_head
         self.classifier = config.classifier
         self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
-        self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
+        self.head = nn.Linear(self.transformer.head.in_features, num_classes)
         self.device = device
 
         
@@ -277,7 +277,7 @@ class ClientModel(nn.Module):
 
     def forward(self, x, labels=None):
         x = self.transformer(x)
-        logits = self.transformer.head(x[:, 0])
+        logits = self.head(x[:, 0])
 
         # if labels is not None:
         #     if self.num_classes == 1:
