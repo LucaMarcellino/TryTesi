@@ -270,14 +270,14 @@ class ClientModel(nn.Module):
         self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
         self.device = device
 
-        """
-        self.transformer = Transformer(config, img_size, vis)
-        self.head = Linear(config.hidden_size, num_classes)
-        """
+        
+        #self.transformer = Transformer(config, img_size, vis)
+        #self.head = Linear(config.hidden_size, num_classes)
+        
 
     def forward(self, x, labels=None):
-        x, attn_weights = self.transformer(x)
-        logits = self.head(x[:, 0])
+        x = self.transformer(x)
+        #logits = self.head(x[:, 0])
 
         # if labels is not None:
         #     if self.num_classes == 1:
@@ -291,7 +291,7 @@ class ClientModel(nn.Module):
         #     return loss
         # else:
         #     return logits, attn_weights
-        return logits
+        return x
 
     def load_from(self, weights):
         with torch.no_grad():
