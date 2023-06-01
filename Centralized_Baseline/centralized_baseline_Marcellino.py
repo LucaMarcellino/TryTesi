@@ -11,7 +11,7 @@ from ViT import ClientModel
 from args import parse_args
 import timm
 
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
 
 seed = 0
 g = torch.Generator()
