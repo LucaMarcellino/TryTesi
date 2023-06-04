@@ -10,17 +10,40 @@ from tqdm import tqdm
 from ViT import ClientModel
 from args import parse_args
 import timm
+import wandb
+import os
 
 device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
 
+os.environ["WANDB_API_KEY"] = "363f7273a682c341d002e62f27a647d29fbca768"
+os.environ["WANDB_MODE"] = "online"
+
+args = parse_args()
 seed = 0
 g = torch.Generator()
 
 
 
+wandb.init(
+    # set the wandb project where this run will be logged
+    project=f"Centralized_ViT_Pretrained:{args.pre_trained}_optimizer:{args.opt}_lr:{args.lr}_mom:{args.momentum}_epochs:{args.epochs}_wd:{args.wd}",
+    
+    # track hyperparameters and run metadata
+    config={
+    "learning_rate": args.lr,
+    "architecture": "ViT",
+    "dataset": "CIFAR-10",
+    "epochs": 50,
+    }
+)
+
+start_round =0
+
+wandb.log({'round': start_round}, commit=True)
+
+
 
 #INPUT PARAMETERS
-args = parse_args()
 opt = args.opt
 lr = args.lr
 momentum = args.momentum
@@ -116,6 +139,8 @@ for epoch in tqdm(range(epochs)):
             
         test_loss_avg = sum(test_loss) / len(test_loss)
         test_accuracy = correct / total
+    
+    wandb.log({"Test_accuracy": test_accuracy, "loss": test_loss_avg})
 
     
     print("Epochs = {} | Train loss = {} | Test loss = {} | Test accuracy = {}".format(epoch + 1,train_loss_avg, test_loss_avg, test_accuracy))
