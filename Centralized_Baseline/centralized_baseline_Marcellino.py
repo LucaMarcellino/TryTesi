@@ -26,7 +26,7 @@ g = torch.Generator()
 
 wandb.init(
     # set the wandb project where this run will be logged
-    project=f"Centralized_ViT_Pretrained:{args.pre_trained}_optimizer:{args.opt}_lr:{args.lr}_mom:{args.momentum}_epochs:{args.epochs}_wd:{args.wd}",
+    project=f"Centralized_ViT_Pretrained {args.pre_trained}_optimizer {args.opt}_lr {args.lr}_mom {args.momentum}_epochs {args.epochs}_wd {args.wd}",
     
     # track hyperparameters and run metadata
     config={
