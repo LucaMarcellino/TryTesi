@@ -37,11 +37,6 @@ wandb.init(
     }
 )
 
-start_round =0
-
-wandb.log({'round': start_round}, commit=True)
-
-
 
 #INPUT PARAMETERS
 opt = args.opt
@@ -140,7 +135,7 @@ for epoch in tqdm(range(epochs)):
         test_loss_avg = sum(test_loss) / len(test_loss)
         test_accuracy = correct / total
     
-    wandb.log({"Test_accuracy": test_accuracy, "loss": test_loss_avg})
+    wandb.log({"Test_accuracy": test_accuracy, "Test_loss": test_loss_avg, "Train_loss": train_loss_avg})
 
     
     print("Epochs = {} | Train loss = {} | Test loss = {} | Test accuracy = {}".format(epoch + 1,train_loss_avg, test_loss_avg, test_accuracy))
@@ -154,9 +149,9 @@ for epoch in tqdm(range(epochs)):
     output_metrics["Test_Accuracy"].append(test_accuracy)
 
     scheduler.step()
-   
 
 
+wandb.finish()
 output_data = pd.DataFrame(output_metrics)
 output_data.to_csv(f"Centralized_ViT_Pretrained:{args.pre_trained}_optimizer:{args.opt}_lr:{args.lr}_mom:{args.momentum}_epochs:{args.epochs}_wd:{args.wd}.csv', index = False.csv", index = False)
 
