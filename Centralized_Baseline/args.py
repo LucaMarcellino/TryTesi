@@ -12,7 +12,7 @@ def parse_args():
                         default=0.01)
     parser.add_argument('--opt',
                         type=str,
-                        default='adam')
+                        default='sgd')
     parser.add_argument('--momentum',
                         type=float,
                         default=0.5)
