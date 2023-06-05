@@ -31,7 +31,7 @@ wandb.init(
     # track hyperparameters and run metadata
     config={
     "momentum":args.momentum,
-    "weight decay": args.wd
+    "weight decay": args.wd,
     "learning_rate": args.lr,
     "architecture": "ViT",
     "dataset": "CIFAR-10",
