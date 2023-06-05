@@ -13,12 +13,14 @@ import timm
 import wandb
 import os
 
-device = 'cuda:1' if torch.cuda.is_available() else 'cpu'
+
+args = parse_args()
+device = f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu'
 
 os.environ["WANDB_API_KEY"] = "363f7273a682c341d002e62f27a647d29fbca768"
 os.environ["WANDB_MODE"] = "online"
 
-args = parse_args()
+
 seed = 0
 g = torch.Generator()
 

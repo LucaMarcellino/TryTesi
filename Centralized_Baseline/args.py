@@ -26,6 +26,9 @@ def parse_args():
                         type=int,
                         help='0 no pretrained, 1 pretrained',
                         default= 1)
+    parser.add_argument('--cuda',
+                        type=int,
+                        default=1)
     
     
     return parser.parse_args()
