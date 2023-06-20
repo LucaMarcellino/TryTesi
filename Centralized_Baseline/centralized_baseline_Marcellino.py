@@ -38,7 +38,7 @@ wandb.init(
     "weight decay": args.wd,
     "learning_rate": args.lr,
     "architecture": "ViT",
-    "dataset": "CIFAR-10",
+    "dataset": args.dataset,
     "epochs": args.epochs,
     }
 )
@@ -52,7 +52,7 @@ momentum = args.momentum
 wd = args.wd
 epochs = args.epochs
 
-trainset,testset = get_datasets()
+trainset,testset = get_datasets(args.dataset)
 criterion = nn.CrossEntropyLoss()
 
 output_metrics = dict()

@@ -29,6 +29,9 @@ def parse_args():
     parser.add_argument('--cuda',
                         type=int,
                         default=1)
+    parser.add_argument('--dataset',
+                        type=str,
+                        deafult='cifar10')
     
     
     return parser.parse_args()
