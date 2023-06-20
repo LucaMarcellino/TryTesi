@@ -96,7 +96,10 @@ if args.pre_trained == 0:
     net = ClientModel(device = device)
 elif args.pre_trained == 1:
     net = timm.create_model('vit_small_patch16_224', pretrained=True)
-    net.head = nn.Linear(net.head.in_features, 10)
+    if args.dataset == "cifar10":
+        net.head = nn.Linear(net.head.in_features, 10)
+    elif args.dataset == "cifar100":
+        net.head = nn.Linear(net.head.in_features, 100)
 net.to(device)
 
 if opt == "sgd":
