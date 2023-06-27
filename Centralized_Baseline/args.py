@@ -25,7 +25,7 @@ def parse_args():
     parser.add_argument('--pre_trained',
                         type=int,
                         help='0 no pretrained, 1 pretrained',
-                        default= 1)
+                        default= 0)
     parser.add_argument('--cuda',
                         type=int,
                         default=1)
