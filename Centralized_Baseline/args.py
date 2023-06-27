@@ -32,6 +32,6 @@ def parse_args():
     parser.add_argument('--dataset',
                         type=str,
                         default='cifar10')
-    
+
     
     return parser.parse_args()
