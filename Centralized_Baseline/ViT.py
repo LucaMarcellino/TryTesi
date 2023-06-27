@@ -261,23 +261,29 @@ class Transformer(nn.Module):
 
 
 class ClientModel(nn.Module):
-    def __init__(self, device = None , config=configs.get_b16_config(), img_size=224, num_classes=10, zero_head=False, vis=False):
+    def __init__(self,pretrained, device = None , config=configs.get_b16_config(), img_size=224, num_classes=10, zero_head=False, vis=False):
         super(ClientModel, self).__init__()
         self.num_classes = num_classes
         self.zero_head = zero_head
         self.classifier = config.classifier
-        self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
-        self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
-        self.device = device
-
-        
-        #self.transformer = Transformer(config, img_size, vis)
-        #self.head = Linear(config.hidden_size, num_classes)
+        self.pretrained = pretrained
+        if self.pretrained == 1:
+            self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
+            self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
+            self.device = device
+        elif self.pretrained == 0:
+            self.transformer = Transformer(config, img_size, vis)
+            self.head = Linear(config.hidden_size, num_classes)
         
 
     def forward(self, x, labels=None):
-        x = self.transformer(x)
-        #logits = self.head(x[:, 0])
+        if self.pretrained == 1:
+            x = self.transformer(x)
+            return x
+        elif self.pretrained == 0:
+            x, attn_weights = self.transformer(x)
+            logits = self.head(x[:, 0])
+            return logits
 
         # if labels is not None:
         #     if self.num_classes == 1:
@@ -291,7 +297,7 @@ class ClientModel(nn.Module):
         #     return loss
         # else:
         #     return logits, attn_weights
-        return x
+        
 
     def load_from(self, weights):
         with torch.no_grad():
