@@ -71,6 +71,7 @@ output_metrics["Test_Accuracy"] = list()
 
 print("Running test with:")
 print("Pretrained : {}".format(args.pre_trained))
+print("Dataset : {}".format(args.dataset))
 print("Optimizer : {}".format(opt))
 print("Learning Rate : {}".format(lr))
 print("Momentum: {}".format(momentum))
