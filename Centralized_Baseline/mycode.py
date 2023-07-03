@@ -82,7 +82,7 @@ make_it_reproducible(seed)
 g.manual_seed(seed)
 
 trainloader = torch.utils.data.DataLoader(trainset,
-                                    batch_size = args.batch_size,
+                                    batch_size = 1,#args.batch_size,
                                     shuffle = True,
                                     num_workers = 2,
                                     worker_init_fn = seed_worker,
@@ -94,44 +94,64 @@ testloader = torch.utils.data.DataLoader(testset,
                                 worker_init_fn = seed_worker,
                                 generator = g)
 
-images, _ = next(iter(trainloader))
-       
+image, _ = next(iter(trainloader))
+model = timm.create_model('vit_base_patch16_224', pretrained=True)
 
-# Extract the first image from the batch
-#first_image = images[0]
+input_tensor = image.unsqueeze(0)
 
-net = ClientModel(device = device, pretrained=0, num_classes=10)
-optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
-scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones=[20, 30, 40], gamma = 0.33)
-net.train()
+model.eval()
 with torch.no_grad():
-    output, attn_weights = net(images)
+    output = model(input_tensor)
+attention_weights = output['attention']
 
-print((output.size(), attn_weights))
+# Step 5: Calculate the mean attention weights
+mean_attention_weights = torch.mean(attention_weights, dim=(1, 2))
 
-"""
-mean_attention_weights = torch.mean(attn_weights.squeeze(), dim=(1, 2))
+# Step 6: Normalize the mean attention weights
+normalized_attention_weights = mean_attention_weights / torch.max(mean_attention_weights)
 
-# Flatten the mean attention weights for easier sorting
-flatten_weights = mean_attention_weights.view(-1)
+# Step 7: Define the number of patches to keep
+num_patches = 9
 
-# Sort the flattened attention weights in descending order
-sorted_indices = torch.argsort(flatten_weights, descending=True)
+# Step 8: Extract the best patches based on the attention weights
+sorted_indices = torch.argsort(normalized_attention_weights, descending=True)
+top_indices = sorted_indices[:, :num_patches].squeeze()
 
-# Plot the top 16 most important patches
-fig, ax = plt.subplots(4, 4, figsize=(10, 10))
-for i in range(4):
-    for j in range(4):
-        patch_idx = sorted_indices[i * 4 + j]
-        patch = images[0][:, patch_idx // 8 * 4: (patch_idx // 8 + 1) * 4, patch_idx % 8 * 4: (patch_idx % 8 + 1) * 4]
-        ax[i, j].imshow(patch.permute(1, 2, 0))
-        ax[i, j].axis('off')
-        ax[i, j].set_title(f'Patch {patch_idx.item()}')
+# Step 9: Extract the patches corresponding to the top indices
+patch_size = 32  # Adjust the patch size as needed
+patches = []
 
-plt.tight_layout()
-plt.savefig('two.png')
+for idx in top_indices:
+    patch = input_tensor[:, :, idx * patch_size: (idx + 1) * patch_size, :]
+    patches.append(patch)
+
+# Concatenate the patches along the width dimension
+result = torch.cat(patches, dim=3)
+
+# Step 10: Display the original image and patches
+image_np = image.permute(1, 2, 0).numpy()
+
+plt.figure()
+plt.imshow(image_np)
+plt.title('Original Image')
+plt.axis('off')
 plt.show()
-"""
+
+for i, patch in enumerate(patches):
+    patch_np = patch.squeeze().permute(1, 2, 0).numpy()
+    plt.figure()
+    plt.imshow(patch_np)
+    plt.title(f'Patch {i+1}')
+    plt.axis('off')
+    plt.show()
+
+# Step 11: Save the result image
+result_np = result.squeeze().permute(1, 2, 0).numpy()
+plt.imshow(result_np)
+plt.title('Result Image')
+plt.axis('off')
+plt.savefig('result.jpg')
+plt.show()
 
 
 
