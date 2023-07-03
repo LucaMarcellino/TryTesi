@@ -103,6 +103,7 @@ first_image = first_image.squeeze().numpy().transpose(1, 2, 0)
 plt.imshow(first_image)
 plt.axis('off')  # Turn off axis labels
 plt.savefig('one.png')
+plt.show()
 
 """
 if args.pre_trained == 0:
