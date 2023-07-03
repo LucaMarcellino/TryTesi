@@ -12,7 +12,7 @@ from args import parse_args
 import timm
 import wandb
 import os
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 args = parse_args()
 device = f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu'
