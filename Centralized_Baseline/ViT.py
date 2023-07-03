@@ -283,7 +283,7 @@ class ClientModel(nn.Module):
         elif self.pretrained == 0:
             x, attn_weights = self.transformer(x)
             logits = self.head(x[:, 0])
-            print(x.size())
+            print(x[:,0].size())
             return (logits, attn_weights)
 
         # if labels is not None:
