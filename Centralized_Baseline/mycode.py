@@ -95,7 +95,6 @@ testloader = torch.utils.data.DataLoader(testset,
                                 generator = g)
 
 images, _ = next(iter(trainloader))
-model = timm.create_model('vit_base_patch16_224', pretrained=True)
 
 # Extract the first image from the batch
 #first_image = images[0]
