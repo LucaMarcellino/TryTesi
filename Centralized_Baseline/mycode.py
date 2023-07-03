@@ -98,13 +98,13 @@ images, _ = next(iter(trainloader))
        
 
 # Extract the first image from the batch
-first_image = images[0]
+#first_image = images[0]
 
 net = ClientModel(device = device, pretrained=0, num_classes=10)
 optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
 scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones=[20, 30, 40], gamma = 0.33)
 net.eval()
-output, attn_weights = net(first_image)
+output, attn_weights = net(images)
 
 mean_attention_weights = torch.mean(attn_weights, dim=1)
 
