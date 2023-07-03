@@ -82,7 +82,7 @@ make_it_reproducible(seed)
 g.manual_seed(seed)
 
 trainloader = torch.utils.data.DataLoader(trainset,
-                                    batch_size = 1,#args.batch_size,
+                                    batch_size = args.batch_size,
                                     shuffle = True,
                                     num_workers = 2,
                                     worker_init_fn = seed_worker,
@@ -103,7 +103,7 @@ images, _ = next(iter(trainloader))
 net = ClientModel(device = device, pretrained=0, num_classes=10)
 optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
 scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones=[20, 30, 40], gamma = 0.33)
-net.eval()
+net.train()
 with torch.no_grad():
     output, attn_weights = net(images)
 
@@ -225,7 +225,7 @@ for epoch in tqdm(range(epochs)):
 wandb.finish()
 output_data = pd.DataFrame(output_metrics)
 output_data.to_csv(f"Centralized_ViT_Pretrained:{args.pre_trained}_optimizer:{args.opt}_lr:{args.lr}_mom:{args.momentum}_epochs:{args.epochs}_wd:{args.wd}.csv', index = False.csv", index = False)
-"""        
+"""
 
 
 
