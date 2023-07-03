@@ -109,7 +109,7 @@ with torch.no_grad():
 
 print((output, attn_weights))
 
-
+"""
 mean_attention_weights = torch.mean(attn_weights.squeeze(), dim=(1, 2))
 
 # Flatten the mean attention weights for easier sorting
@@ -131,7 +131,7 @@ for i in range(4):
 plt.tight_layout()
 plt.savefig('two.png')
 plt.show()
-
+"""
 
 
 
