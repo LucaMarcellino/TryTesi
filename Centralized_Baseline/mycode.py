@@ -106,9 +106,8 @@ scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones
 net.eval()
 output, attn_weights = net(images)
 
-print(attn_weights.shape)
 
-mean_attention_weights = torch.mean(attn_weights, dim=1)
+mean_attention_weights = torch.mean(attn_weights.squeeze(), dim=(1, 2))
 
 # Flatten the mean attention weights for easier sorting
 flatten_weights = mean_attention_weights.view(-1)
