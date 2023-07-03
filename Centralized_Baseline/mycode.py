@@ -104,7 +104,9 @@ print(first_image)
 net = ClientModel(device = device, pretrained=0, num_classes=10)
 optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
 scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones=[20, 30, 40], gamma = 0.33)
-net.train()
+net.eval()
+output = net(first_image.unsqueeze[0])
+print(output) 
 
 
 
