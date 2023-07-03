@@ -12,7 +12,7 @@ from args import parse_args
 import timm
 import wandb
 import os
-
+import matplotlib as plt
 
 args = parse_args()
 device = f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu'
@@ -94,7 +94,15 @@ testloader = torch.utils.data.DataLoader(testset,
                                 worker_init_fn = seed_worker,
                                 generator = g)
 
-print(list(trainloader)[0])
+first_image, _ = next(iter(trainloader))
+
+# Convert tensor to NumPy array and transpose dimensions
+first_image = first_image.squeeze().numpy().transpose(1, 2, 0)
+
+# Display the image
+plt.imshow(first_image)
+plt.axis('off')  # Turn off axis labels
+plt.show()
 
 """
 if args.pre_trained == 0:
