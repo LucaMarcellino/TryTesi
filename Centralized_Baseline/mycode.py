@@ -99,14 +99,35 @@ images, _ = next(iter(trainloader))
 
 # Extract the first image from the batch
 first_image = images[0]
-print(first_image)
 
 net = ClientModel(device = device, pretrained=0, num_classes=10)
 optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
 scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones=[20, 30, 40], gamma = 0.33)
 net.eval()
-output = net(first_image.unsqueeze[0])
-print(output) 
+output, attn_weights = net(first_image)
+
+mean_attention_weights = torch.mean(attn_weights, dim=1)
+
+# Flatten the mean attention weights for easier sorting
+flatten_weights = mean_attention_weights.view(-1)
+
+# Sort the flattened attention weights in descending order
+sorted_indices = torch.argsort(flatten_weights, descending=True)
+
+# Plot the top 16 most important patches
+fig, ax = plt.subplots(4, 4, figsize=(10, 10))
+for i in range(4):
+    for j in range(4):
+        patch_idx = sorted_indices[i * 4 + j]
+        patch = images[0][:, patch_idx // 8 * 4: (patch_idx // 8 + 1) * 4, patch_idx % 8 * 4: (patch_idx % 8 + 1) * 4]
+        ax[i, j].imshow(patch.permute(1, 2, 0))
+        ax[i, j].axis('off')
+        ax[i, j].set_title(f'Patch {patch_idx.item()}')
+
+plt.tight_layout()
+plt.savefig('two.png')
+plt.show()
+
 
 
 
