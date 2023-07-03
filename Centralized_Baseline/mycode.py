@@ -13,6 +13,7 @@ import timm
 import wandb
 import os
 import matplotlib.pyplot as plt
+import torchvision.transforms as T
 
 args = parse_args()
 device = f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu'
@@ -95,9 +96,14 @@ testloader = torch.utils.data.DataLoader(testset,
                                 generator = g)
 
 image, _ = next(iter(trainloader))
-model = timm.create_model('vit_base_patch16_224', pretrained=True)
+model = timm.create_model('vit_base_patch16_224', pretrained=False)
 
-input_tensor = image.unsqueeze(0)
+transform = T.Compose([
+    T.Resize((224, 224)),
+    T.Normalize(mean=[0.4914, 0.4822, 0.4465], std=[0.2470, 0.2435, 0.2616]),  # CIFAR-10 mean and std
+])
+
+input_tensor = transform(image).unsqueeze(0)
 
 model.eval()
 with torch.no_grad():
