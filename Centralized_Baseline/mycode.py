@@ -94,10 +94,13 @@ testloader = torch.utils.data.DataLoader(testset,
                                 worker_init_fn = seed_worker,
                                 generator = g)
 
-first_image, _ = next(iter(trainloader))
+images, _ = next(iter(trainloader))
+
+# Extract the first image from the batch
+first_image = images[0]
 
 # Convert tensor to NumPy array and transpose dimensions
-first_image = first_image.squeeze().numpy().transpose(1, 2, 0)
+first_image = first_image.permute(1, 2, 0).numpy()
 
 # Display the image
 plt.imshow(first_image)
