@@ -94,7 +94,7 @@ testloader = torch.utils.data.DataLoader(testset,
                                 worker_init_fn = seed_worker,
                                 generator = g)
 
-print(trainloader)
+print(list(trainloader)[0])
 
 """
 if args.pre_trained == 0:
