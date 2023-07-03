@@ -95,10 +95,22 @@ testloader = torch.utils.data.DataLoader(testset,
                                 generator = g)
 
 images, _ = next(iter(trainloader))
+       
 
 # Extract the first image from the batch
 first_image = images[0]
+print(first_image)
 
+net = ClientModel(device = device, pretrained=0, num_classes=10)
+optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
+scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones=[20, 30, 40], gamma = 0.33)
+net.train()
+
+
+
+
+
+"""
 # Convert tensor to NumPy array and transpose dimensions
 first_image = first_image.permute(1, 2, 0).numpy()
 
@@ -107,6 +119,7 @@ plt.imshow(first_image)
 plt.axis('off')  # Turn off axis labels
 plt.savefig('one.png')
 plt.show()
+"""
 
 """
 if args.pre_trained == 0:
