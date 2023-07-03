@@ -283,21 +283,19 @@ class ClientModel(nn.Module):
         elif self.pretrained == 0:
             x, attn_weights = self.transformer(x)
             logits = self.head(x[:, 0])
-            print(x[:,0].size())
-            return (logits, attn_weights)
-
-        # if labels is not None:
-        #     if self.num_classes == 1:
-        #         # loss_fct = CrossEntropyLoss()
-        #         loss_fct = torch.nn.L1Loss()
-        #         loss = loss_fct(logits.view(-1, self.num_classes), labels.view(-1))
-        #     else:
-        #         loss_fct = CrossEntropyLoss()
-        #         loss = loss_fct(logits.view(-1, self.num_classes), labels.view(-1))
-        #
-        #     return loss
-        # else:
-        #     return logits, attn_weights
+            
+            if labels is not None:
+                 if self.num_classes == 1:
+                     # loss_fct = CrossEntropyLoss()
+                     loss_fct = torch.nn.L1Loss()
+                     loss = loss_fct(logits.view(-1, self.num_classes), labels.view(-1))
+                 else:
+                     loss_fct = CrossEntropyLoss()
+                     loss = loss_fct(logits.view(-1, self.num_classes), labels.view(-1))
+            
+                 return loss
+            else:
+                 return logits, attn_weights
         
 
     def load_from(self, weights):
