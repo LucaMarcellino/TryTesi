@@ -82,7 +82,7 @@ make_it_reproducible(seed)
 g.manual_seed(seed)
 
 trainloader = torch.utils.data.DataLoader(trainset,
-                                    batch_size = args.batch_size,
+                                    batch_size = 1,#args.batch_size,
                                     shuffle = True,
                                     num_workers = 2,
                                     worker_init_fn = seed_worker,
