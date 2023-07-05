@@ -104,40 +104,32 @@ scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones
 net.train()
 with torch.no_grad():
     output, attn_weights = net(images)
+    
+attn_weights = attn_weights[1:]
+    
+patch_size = 224 // 16  # Assuming 224x224 image divided into 16x16 patches
+patches = images.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
+patches = patches.reshape(-1, 3, patch_size, patch_size)
+
+fig, axs = plt.subplots(16, 16, figsize=(16, 16))
+
+for i, ax in enumerate(axs.flat):
+    # Plot the patch image
+    patch_image = patches[i].numpy().transpose(1, 2, 0)
+    patch_image = (patch_image + 1) / 2.0
+    ax.imshow(patch_image)
+    ax.axis('off')
+
+    # Plot the attention weights for the corresponding patch
+    ax.imshow(attn_weights[-1][0, i].numpy(), cmap='hot', alpha=0.6)
+
+plt.tight_layout()
+plt.savefig("try.png", bbox_inches='tight')
+plt.show()
 
 
 
 
-def save_attention_image(image, attention_weights, output_path):
-    # Normalize attention weights between 0 and 1
-    #normalized_weights = (attention_weights - np.min(attention_weights)) / (
-    #    np.max(attention_weights) - np.min(attention_weights)
-    #)
-
-    # Create a figure with two subplots: original image and attention map
-    fig, axs = plt.subplots(1, 2, figsize=(10, 5))
-
-    # Plot the original image
-    image = image.squeeze().detach().numpy().transpose(1, 2, 0)
-
-# Denormalize the image from [-1, 1] to [0, 1]
-    output_image = (image + 1) / 2.0
-    axs[0].imshow(image)
-    axs[0].axis('off')
-    axs[0].set_title('Original Image')
-
-    # Plot the attention map using the normalized weights
-    axs[1].imshow(attention_weights, cmap='hot')
-    axs[1].axis('off')
-    axs[1].set_title('Attention Map')
-
-    # Save the figure to the specified output path
-    plt.savefig(output_path, bbox_inches='tight')
-
-# Example usage
-output_path = 'try.png'  # Replace with the desired output file path
-
-save_attention_image(images, attn_weights[1:], output_path)
 #print(output.size())
 #print(len(attn_weights))
 
