@@ -115,8 +115,8 @@ def transform(img, img_size):
 
 
 def visualize_predict(model, img, img_size, patch_size, device):
-    img_pre = transform(img, img_size)
-    attention = visualize_attention(model, img_pre, patch_size, device)
+    #img_pre = transform(img, img_size)
+    attention = visualize_attention(model, img, patch_size, device)
     plot_attention(img, attention)
 
 
