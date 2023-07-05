@@ -135,7 +135,7 @@ attn_weights = attn_weights[1:]
 iamge = image.squeeze().permute(1, 2, 0).numpy()
 
 # Display the image
-plt.imshow(image)
+plt.imshow(image1)
 plt.axis('off')
 plt.savefig("try.png")
 plt.show()
