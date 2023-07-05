@@ -285,7 +285,7 @@ class ClientModel(nn.Module):
             logits = self.head(x[:, 0])
             print(x.size())
             print(x[:,0].size())
-            print(x[0,:].size())
+            print(x[0,:,0].size())
             
             if labels is not None:
                  if self.num_classes == 1:
