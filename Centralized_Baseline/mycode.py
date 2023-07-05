@@ -133,7 +133,7 @@ def save_attention_image(image, attention_weights, output_path):
 # Example usage
 output_path = 'try.png'  # Replace with the desired output file path
 
-save_attention_image(images, attn_weights, output_path)
+save_attention_image(images, attn_weights[1:], output_path)
 #print(output.size())
 #print(len(attn_weights))
 
