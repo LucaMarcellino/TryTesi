@@ -121,7 +121,7 @@ for i, ax in enumerate(axs.flat):
     ax.axis('off')
 
     # Plot the attention weights for the corresponding patch
-    ax.imshow(attn_weights[-1][0, i].numpy(), cmap='hot', alpha=0.6)
+    ax.imshow(attn_weights[i].numpy(), cmap='hot', alpha=0.6)
 
 plt.tight_layout()
 plt.savefig("try.png", bbox_inches='tight')
