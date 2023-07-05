@@ -133,8 +133,8 @@ attn_weights = attn_weights[1:]
 
 # Convert tensor to numpy array and transpose the dimensions
 patches = []
-for i in range(0, image1.shape[2], 16):
-    for j in range(0, image1.shape[3], 16):
+for i in range(0, image1.shape[0], 16):
+    for j in range(0, image1.shape[1], 16):
         patch = image[i:i+16, j:j+16, :]
         patches.append(patch)
 print(len(patches))
