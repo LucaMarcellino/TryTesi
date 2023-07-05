@@ -13,6 +13,7 @@ import timm
 import wandb
 import os
 import matplotlib.pyplot as plt
+import numpy as np
 
 args = parse_args()
 device = f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu'
@@ -104,6 +105,35 @@ net.train()
 with torch.no_grad():
     output, attn_weights = net(images)
 
+
+
+
+def save_attention_image(image, attention_weights, output_path):
+    # Normalize attention weights between 0 and 1
+    normalized_weights = (attention_weights - np.min(attention_weights)) / (
+        np.max(attention_weights) - np.min(attention_weights)
+    )
+
+    # Create a figure with two subplots: original image and attention map
+    fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+
+    # Plot the original image
+    axs[0].imshow(image)
+    axs[0].axis('off')
+    axs[0].set_title('Original Image')
+
+    # Plot the attention map using the normalized weights
+    axs[1].imshow(normalized_weights, cmap='hot')
+    axs[1].axis('off')
+    axs[1].set_title('Attention Map')
+
+    # Save the figure to the specified output path
+    plt.savefig(output_path, bbox_inches='tight')
+
+# Example usage
+output_path = 'try.png'  # Replace with the desired output file path
+
+save_attention_image(images, attn_weights, output_path)
 #print(output.size())
 #print(len(attn_weights))
 
