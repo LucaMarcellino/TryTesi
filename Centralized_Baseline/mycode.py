@@ -14,6 +14,8 @@ import wandb
 import os
 import matplotlib.pyplot as plt
 import numpy as np
+from vity import VitGenerator
+from torchvision import transforms
 
 args = parse_args()
 device = f'cuda:{args.cuda}' if torch.cuda.is_available() else 'cpu'
@@ -97,107 +99,70 @@ testloader = torch.utils.data.DataLoader(testset,
 
 image, _ = next(iter(trainloader))
 
-print(image.size())
-
 image1 = image[0,0,:,:]
-print(image1.size())
 
-net = ClientModel(device = device, pretrained=0, num_classes=10)
-optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
-scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones=[20, 30, 40], gamma = 0.33)
-net.train()
-with torch.no_grad():
-    output, attn_weights = net(image)
-    
-attn_weights = attn_weights[1:]
-    
-#patch_size = 224 // 16  # Assuming 224x224 image divided into 16x16 patches
-#patches = images.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
-#patches = patches.reshape(-1, 3, patch_size, patch_size)
-#
-#fig, axs = plt.subplots(16, 16, figsize=(16, 16))
-#
-#for i, ax in enumerate(axs.flat):
-#    # Plot the patch image
-#    patch_image = patches[i].numpy().transpose(1, 2, 0)
-#    patch_image = (patch_image + 1) / 2.0
-#    ax.imshow(patch_image)
-#    ax.axis('off')
-#
-#    # Plot the attention weights for the corresponding patch
-#    ax.imshow(attn_weights[i].numpy(), cmap='hot', alpha=0.6)
-#
-#plt.tight_layout()
-#plt.savefig("try.png", bbox_inches='tight')
-#plt.show()
+name_model = 'vit_small'
+patch_size = 16
 
-# Convert tensor to numpy array and transpose the dimensions
-M = image1.shape[0]//16
-N = image1.shape[1]//16
-patches = [image1[x:x+M,y:y+N] for x in range(0,image1.shape[0],M) for y in range(0,image.shape[1],N)]
+net = VitGenerator(name_model, patch_size, 
+                     device, evaluate=True, random=False, verbose=True)
 
 
-print(len(patches))
+def transform(img, img_size):
+    img = transforms.Resize(img_size)(img)
+    img = transforms.ToTensor()(img)
+    return img
 
 
-def show_images(images) -> None:
-    n = len(images)
-    f = plt.figure()
-    for i in range(n):
-        # Debug, plot figure
-        f.add_subplot(1, n, i + 1)
-        plt.imshow(images[i])
-
-    plt.show(block=True)
-    plt.savefig("try.png")
+def visualize_predict(model, img, img_size, patch_size, device):
+    img_pre = transform(img, img_size)
+    attention = visualize_attention(model, img_pre, patch_size, device)
+    plot_attention(img, attention)
 
 
+def visualize_attention(model, img, patch_size, device):
+    # make the image divisible by the patch size
+    w, h = img.shape[1] - img.shape[1] % patch_size, img.shape[2] - \
+        img.shape[2] % patch_size
+    img = img[:, :w, :h].unsqueeze(0)
+
+    w_featmap = img.shape[-2] // patch_size
+    h_featmap = img.shape[-1] // patch_size
+
+    attentions = model.get_last_selfattention(img.to(device))
+
+    nh = attentions.shape[1]  # number of head
+
+    # keep only the output patch attention
+    attentions = attentions[0, :, 0, 1:].reshape(nh, -1)
+
+    attentions = attentions.reshape(nh, w_featmap, h_featmap)
+    attentions = nn.functional.interpolate(attentions.unsqueeze(
+        0), scale_factor=patch_size, mode="nearest")[0].cpu().numpy()
+
+    return attentions
 
 
+def plot_attention(img, attention):
+    n_heads = attention.shape[0]
 
+    plt.figure(figsize=(10, 10))
+    text = ["Original Image", "Head Mean"]
+    for i, fig in enumerate([img, np.mean(attention, 0)]):
+        plt.subplot(1, 2, i+1)
+        plt.imshow(fig, cmap='inferno')
+        plt.title(text[i])
+    plt.show()
 
+    plt.figure(figsize=(10, 10))
+    for i in range(n_heads):
+        plt.subplot(n_heads//3, 3, i+1)
+        plt.imshow(attention[i], cmap='inferno')
+        plt.title(f"Head n: {i+1}")
+    plt.tight_layout()
+    plt.show()
 
-#print(output.size())
-#print(len(attn_weights))
-
-"""
-mean_attention_weights = torch.mean(attn_weights.squeeze(), dim=(1, 2))
-
-# Flatten the mean attention weights for easier sorting
-flatten_weights = mean_attention_weights.view(-1)
-
-# Sort the flattened attention weights in descending order
-sorted_indices = torch.argsort(flatten_weights, descending=True)
-
-# Plot the top 16 most important patches
-fig, ax = plt.subplots(4, 4, figsize=(10, 10))
-for i in range(4):
-    for j in range(4):
-        patch_idx = sorted_indices[i * 4 + j]
-        patch = images[0][:, patch_idx // 8 * 4: (patch_idx // 8 + 1) * 4, patch_idx % 8 * 4: (patch_idx % 8 + 1) * 4]
-        ax[i, j].imshow(patch.permute(1, 2, 0))
-        ax[i, j].axis('off')
-        ax[i, j].set_title(f'Patch {patch_idx.item()}')
-
-plt.tight_layout()
-plt.savefig('two.png')
-plt.show()
-"""
-
-
-
-
-
-"""
-# Convert tensor to NumPy array and transpose dimensions
-first_image = first_image.permute(1, 2, 0).numpy()
-
-# Display the image
-plt.imshow(first_image)
-plt.axis('off')  # Turn off axis labels
-plt.savefig('one.png')
-plt.show()
-"""
+visualize_predict(net, image1, (224,224), patch_size, device)
 
 """
 if args.pre_trained == 0:
