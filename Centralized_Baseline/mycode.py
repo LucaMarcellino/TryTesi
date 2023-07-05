@@ -104,7 +104,8 @@ net.train()
 with torch.no_grad():
     output, attn_weights = net(images)
 
-print((output.size(), attn_weights.size()))
+print(output.size())
+print(len(attn_weights))
 
 """
 mean_attention_weights = torch.mean(attn_weights.squeeze(), dim=(1, 2))
