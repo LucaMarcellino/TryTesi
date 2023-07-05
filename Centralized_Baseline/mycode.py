@@ -127,20 +127,24 @@ attn_weights = attn_weights[1:]
 #plt.savefig("try.png", bbox_inches='tight')
 #plt.show()
 
-patch_size = 16
+patches = []
+for i in range(0, image.shape[2], 16):
+    for j in range(0, image.shape[3], 16):
+        patch = image[:, :, i:i+16, j:j+16]
+        patches.append(patch)
 
-# Divide the image into patches
-patches = image.unfold(1, patch_size, patch_size).unfold(2, patch_size, patch_size)
-patches = patches.reshape(-1, image.shape[0], patch_size, patch_size)
+# Display the patches
+fig, axes = plt.subplots(4, 8, figsize=(10, 6))
+axes = axes.ravel()
 
-# Print and visualize each patch
 for i, patch in enumerate(patches):
-    patch_image = patch.permute(1, 2, 0)  # Convert tensor shape from CxHxW to HxWxC
-    patch_image = (patch_image + 1) / 2  # Scale the values from [-1, 1] to [0, 1]
-    plt.imshow(patch_image)
-    plt.axis('off')
-    plt.savefig("try.png", bbox_inches='tight')
-    plt.show()
+    patch = patch.squeeze().permute(1, 2, 0)
+    axes[i].imshow(patch)
+    axes[i].axis('off')
+
+plt.tight_layout()
+plt.savefig("try.png")
+plt.show()
 
 
 
