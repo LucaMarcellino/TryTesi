@@ -138,17 +138,23 @@ for i in range(0, image1.shape[0], 16):
         patch = image[i:i+16, j:j+16, :]
         patches.append(patch)
 
-# Create a grid of patches for display
-patch_grid = np.vstack([np.hstack(patches[i:i+14]) for i in range(0, len(patches), 14)])
+
+# Create a composite image with all the patches
+grid_size = int(np.sqrt(len(patches)))
+composite_image = np.zeros((grid_size * 16, grid_size * 16, 3), dtype=np.uint8)
 
 for i, patch in enumerate(patches):
-    patch = patch.numpy()
-    patch = np.transpose(patch, (1, 2, 0))
-    plt.imshow(patch)
-    plt.axis('off')
-    plt.savefig("try.py")
-    plt.show()
+    row = (i // grid_size) * 16
+    col = (i % grid_size) * 16
+    composite_image[row:row+16, col:col+16, :] = patch
 
+# Display the composite image
+plt.imshow(composite_image)
+plt.axis('off')
+plt.show()
+
+# Save the composite image
+plt.imsave('composite_image.png', composite_image)
 
 
 
