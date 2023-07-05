@@ -132,13 +132,21 @@ attn_weights = attn_weights[1:]
 #plt.show()
 
 # Convert tensor to numpy array and transpose the dimensions
-iamge = image.squeeze().permute(1, 2, 0).numpy()
+patches = []
+for i in range(0, image1.shape[0], 16):
+    for j in range(0, image1.shape[1], 16):
+        patch = image[i:i+16, j:j+16, :]
+        patches.append(patch)
 
-# Display the image
-plt.imshow(image1)
+# Create a grid of patches for display
+patch_grid = np.vstack([np.hstack(patches[i:i+14]) for i in range(0, len(patches), 14)])
+
+# Display the image with patches
+plt.imshow(patch_grid)
 plt.axis('off')
 plt.savefig("try.png")
 plt.show()
+
 
 
 
