@@ -95,7 +95,7 @@ testloader = torch.utils.data.DataLoader(testset,
                                 worker_init_fn = seed_worker,
                                 generator = g)
 
-images, _ = next(iter(trainloader))
+image, _ = next(iter(trainloader))
 
 
 net = ClientModel(device = device, pretrained=0, num_classes=10)
@@ -103,29 +103,44 @@ optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
 scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer=optimizer, milestones=[20, 30, 40], gamma = 0.33)
 net.train()
 with torch.no_grad():
-    output, attn_weights = net(images)
+    output, attn_weights = net(image)
     
 attn_weights = attn_weights[1:]
     
-patch_size = 224 // 16  # Assuming 224x224 image divided into 16x16 patches
-patches = images.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
-patches = patches.reshape(-1, 3, patch_size, patch_size)
+#patch_size = 224 // 16  # Assuming 224x224 image divided into 16x16 patches
+#patches = images.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
+#patches = patches.reshape(-1, 3, patch_size, patch_size)
+#
+#fig, axs = plt.subplots(16, 16, figsize=(16, 16))
+#
+#for i, ax in enumerate(axs.flat):
+#    # Plot the patch image
+#    patch_image = patches[i].numpy().transpose(1, 2, 0)
+#    patch_image = (patch_image + 1) / 2.0
+#    ax.imshow(patch_image)
+#    ax.axis('off')
+#
+#    # Plot the attention weights for the corresponding patch
+#    ax.imshow(attn_weights[i].numpy(), cmap='hot', alpha=0.6)
+#
+#plt.tight_layout()
+#plt.savefig("try.png", bbox_inches='tight')
+#plt.show()
 
-fig, axs = plt.subplots(16, 16, figsize=(16, 16))
+patch_size = 16
 
-for i, ax in enumerate(axs.flat):
-    # Plot the patch image
-    patch_image = patches[i].numpy().transpose(1, 2, 0)
-    patch_image = (patch_image + 1) / 2.0
-    ax.imshow(patch_image)
-    ax.axis('off')
+# Divide the image into patches
+patches = image.unfold(1, patch_size, patch_size).unfold(2, patch_size, patch_size)
+patches = patches.reshape(-1, image.shape[0], patch_size, patch_size)
 
-    # Plot the attention weights for the corresponding patch
-    ax.imshow(attn_weights[i].numpy(), cmap='hot', alpha=0.6)
-
-plt.tight_layout()
-plt.savefig("try.png", bbox_inches='tight')
-plt.show()
+# Print and visualize each patch
+for i, patch in enumerate(patches):
+    patch_image = patch.permute(1, 2, 0)  # Convert tensor shape from CxHxW to HxWxC
+    patch_image = (patch_image + 1) / 2  # Scale the values from [-1, 1] to [0, 1]
+    plt.imshow(patch_image)
+    plt.axis('off')
+    plt.savefig("try.png", bbox_inches='tight')
+    plt.show()
 
 
 
