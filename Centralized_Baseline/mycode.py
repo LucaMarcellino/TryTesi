@@ -141,13 +141,13 @@ for i in range(0, image1.shape[0], 16):
 # Create a grid of patches for display
 patch_grid = np.vstack([np.hstack(patches[i:i+14]) for i in range(0, len(patches), 14)])
 
-_, axs = plt.subplots(14, 14, figsize=(12, 12))
-axs = axs.flatten()
-for img, ax in zip(patch_grid, axs):
-    ax.imshow(img)
-plt.show()
-plt.savefig("try.png")
-plt.show()
+for i, patch in enumerate(patches):
+    patch = patch.numpy()
+    patch = np.transpose(patch, (1, 2, 0))
+    plt.imshow(patch)
+    plt.axis('off')
+    plt.savefig("try.py")
+    plt.show()
 
 
 
