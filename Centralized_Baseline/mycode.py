@@ -160,6 +160,7 @@ def plot_attention(img, attention):
         plt.imshow(attention[i], cmap='inferno')
         plt.title(f"Head n: {i+1}")
     plt.tight_layout()
+    plt.savefig("try.py")
     plt.show()
 
 visualize_predict(net, image1, (224,224), patch_size, device)
