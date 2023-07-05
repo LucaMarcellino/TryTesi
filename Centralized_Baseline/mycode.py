@@ -137,24 +137,23 @@ for i in range(0, image1.shape[0], 16):
     for j in range(0, image1.shape[1], 16):
         patch = image[i:i+16, j:j+16, :]
         patches.append(patch)
+print(len(patches))
+print(patches)
 
+def show_images(images) -> None:
+    n: int = len(images)
+    f = plt.figure()
+    for i in range(n):
+        # Debug, plot figure
+        f.add_subplot(1, n, i + 1)
+        plt.imshow(images[i])
+
+    plt.show(block=True)
+    plt.savefig("try.png")
 
 # Create a composite image with all the patches
-grid_size = int(np.sqrt(len(patches)))
-composite_image = np.zeros((grid_size * 16, grid_size * 16, 3), dtype=np.uint8)
 
-for i, patch in enumerate(patches):
-    row = (i // grid_size) * 16
-    col = (i % grid_size) * 16
-    composite_image[row:row+16, col:col+16, :] = patch
 
-# Display the composite image
-plt.imshow(composite_image)
-plt.axis('off')
-plt.show()
-
-# Save the composite image
-plt.imsave('composite_image.png', composite_image)
 
 
 
