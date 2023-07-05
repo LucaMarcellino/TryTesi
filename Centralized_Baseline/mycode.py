@@ -100,7 +100,7 @@ image, _ = next(iter(trainloader))
 print(image.size())
 
 image1 = image[0,0,:,:]
-print(image.size())
+print(image1.size())
 
 net = ClientModel(device = device, pretrained=0, num_classes=10)
 optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
@@ -133,15 +133,15 @@ attn_weights = attn_weights[1:]
 
 # Convert tensor to numpy array and transpose the dimensions
 patches = []
-for i in range(0, image1.shape[0], 16):
-    for j in range(0, image1.shape[1], 16):
+for i in range(0, image1.shape[2], 16):
+    for j in range(0, image1.shape[3], 16):
         patch = image[i:i+16, j:j+16, :]
         patches.append(patch)
 print(len(patches))
 print(patches)
 
 def show_images(images) -> None:
-    n: int = len(images)
+    n = len(images)
     f = plt.figure()
     for i in range(n):
         # Debug, plot figure
@@ -151,7 +151,6 @@ def show_images(images) -> None:
     plt.show(block=True)
     plt.savefig("try.png")
 
-# Create a composite image with all the patches
 
 
 
