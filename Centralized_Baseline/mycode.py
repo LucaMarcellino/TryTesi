@@ -118,6 +118,10 @@ def save_attention_image(image, attention_weights, output_path):
     fig, axs = plt.subplots(1, 2, figsize=(10, 5))
 
     # Plot the original image
+    image = image.squeeze().detach().numpy().transpose(1, 2, 0)
+
+# Denormalize the image from [-1, 1] to [0, 1]
+    output_image = (image + 1) / 2.0
     axs[0].imshow(image)
     axs[0].axis('off')
     axs[0].set_title('Original Image')
