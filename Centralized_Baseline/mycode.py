@@ -97,6 +97,8 @@ testloader = torch.utils.data.DataLoader(testset,
 
 image, _ = next(iter(trainloader))
 
+print(image.size())
+
 
 net = ClientModel(device = device, pretrained=0, num_classes=10)
 optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
