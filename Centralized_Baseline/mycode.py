@@ -115,7 +115,7 @@ def transform(img, img_size):
     return img
 
 
-def visualize_predict(model, img, img_size, patch_size, device):
+def visualize_predict(model, img, patch_size, device):
     #img_pre = transform(img, img_size)
     attention = visualize_attention(model, img, patch_size, device)
     plot_attention(img, attention)
@@ -165,7 +165,7 @@ def plot_attention(img, attention):
     plt.savefig("try.png")
     plt.show()
 
-visualize_predict(net, image1, img_size, patch_size, device)
+visualize_predict(net, image1, patch_size, device)
 
 """
 if args.pre_trained == 0:
