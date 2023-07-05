@@ -110,9 +110,9 @@ with torch.no_grad():
 
 def save_attention_image(image, attention_weights, output_path):
     # Normalize attention weights between 0 and 1
-    normalized_weights = (attention_weights - np.min(attention_weights)) / (
-        np.max(attention_weights) - np.min(attention_weights)
-    )
+    #normalized_weights = (attention_weights - np.min(attention_weights)) / (
+    #    np.max(attention_weights) - np.min(attention_weights)
+    #)
 
     # Create a figure with two subplots: original image and attention map
     fig, axs = plt.subplots(1, 2, figsize=(10, 5))
@@ -123,7 +123,7 @@ def save_attention_image(image, attention_weights, output_path):
     axs[0].set_title('Original Image')
 
     # Plot the attention map using the normalized weights
-    axs[1].imshow(normalized_weights, cmap='hot')
+    axs[1].imshow(attention_weights, cmap='hot')
     axs[1].axis('off')
     axs[1].set_title('Attention Map')
 
