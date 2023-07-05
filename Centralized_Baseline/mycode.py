@@ -99,7 +99,7 @@ testloader = torch.utils.data.DataLoader(testset,
 
 image, _ = next(iter(trainloader))
 
-image1 = image[0,0,:,:]
+image1 = image[0,:,:,:]
 
 name_model = 'vit_small'
 patch_size = 16
