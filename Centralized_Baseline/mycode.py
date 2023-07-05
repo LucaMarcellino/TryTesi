@@ -99,7 +99,7 @@ image, _ = next(iter(trainloader))
 
 print(image.size())
 
-image = image[0,0,:,:]
+image1 = image[0,0,:,:]
 print(image.size())
 
 net = ClientModel(device = device, pretrained=0, num_classes=10)
@@ -131,22 +131,12 @@ attn_weights = attn_weights[1:]
 #plt.savefig("try.png", bbox_inches='tight')
 #plt.show()
 
-patches = []
-for i in range(0, image.shape[2], 16):
-    for j in range(0, image.shape[3], 16):
-        patch = image[:, :, i:i+16, j:j+16]
-        patches.append(patch)
+# Convert tensor to numpy array and transpose the dimensions
+iamge = image.squeeze().permute(1, 2, 0).numpy()
 
-# Display the patches
-fig, axes = plt.subplots(4, 8, figsize=(10, 6))
-axes = axes.ravel()
-
-for i, patch in enumerate(patches):
-    patch = patch.squeeze().permute(1, 2, 0)
-    axes[i].imshow(patch)
-    axes[i].axis('off')
-
-plt.tight_layout()
+# Display the image
+plt.imshow(image)
+plt.axis('off')
 plt.savefig("try.png")
 plt.show()
 
