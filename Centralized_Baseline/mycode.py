@@ -100,6 +100,8 @@ testloader = torch.utils.data.DataLoader(testset,
 image, _ = next(iter(trainloader))
 
 image1 = image[0,:,:,:]
+factor_reduce = 2
+img_size = tuple(np.array(image.size[::-1]) // factor_reduce)
 
 name_model = 'vit_small'
 patch_size = 16
@@ -115,7 +117,7 @@ def transform(img, img_size):
 
 
 def visualize_predict(model, img, img_size, patch_size, device):
-    #img_pre = transform(img, img_size)
+    img_pre = transform(img, img_size)
     attention = visualize_attention(model, img, patch_size, device)
     plot_attention(img, attention)
 
@@ -164,7 +166,7 @@ def plot_attention(img, attention):
     plt.savefig("try.png")
     plt.show()
 
-visualize_predict(net, image1, (224,224), patch_size, device)
+visualize_predict(net, image1, img_size, patch_size, device)
 
 """
 if args.pre_trained == 0:
