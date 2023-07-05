@@ -283,9 +283,9 @@ class ClientModel(nn.Module):
         elif self.pretrained == 0:
             x, attn_weights = self.transformer(x)
             logits = self.head(x[:, 0])
-            print(x.size())
-            print(x[:,0].size())
-            print(x[0,:,0].size())
+            #print(x.size())
+            #print(x[:,0].size())
+            print(x[0,:,0])
             
             if labels is not None:
                  if self.num_classes == 1:
