@@ -99,7 +99,7 @@ testloader = torch.utils.data.DataLoader(testset,
 
 image, _ = next(iter(trainloader))
 
-image1 = image[0,:,:,:]
+image1 = image[0,0,:,:]
 factor_reduce = 2
 img_size = tuple(np.array(image.size[::-1]) // factor_reduce)
 
