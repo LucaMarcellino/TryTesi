@@ -96,8 +96,6 @@ testloader = torch.utils.data.DataLoader(testset,
 
 images, _ = next(iter(trainloader))
 
-# Extract the first image from the batch
-#first_image = images[0]
 
 net = ClientModel(device = device, pretrained=0, num_classes=10)
 optimizer = optim.SGD(net.parameters(), lr , momentum , wd )
