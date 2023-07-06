@@ -282,7 +282,7 @@ class VitGenerator(object):
                                       qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6))
 
         elif self.name_model == 'vit_small':
-            model = VisionTransformer(patch_size=self.patch_size,num_classes=self.num_classes, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4,
+            model = VisionTransformer(patch_size=self.patch_size, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4,
                                       qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6))
 
         elif self.name_model == 'vit_base':
