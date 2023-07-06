@@ -236,7 +236,9 @@ class VisionTransformer(nn.Module):
         for blk in self.blocks:
             x = blk(x)
         x = self.norm(x)
-        return self.head(x[:, 0])
+        logits = self.head(x[:, 0])
+        #print(logits.size())
+        return logits
 
     def get_last_selfattention(self, x):
         x = self.prepare_tokens(x)
@@ -259,9 +261,10 @@ class VisionTransformer(nn.Module):
 
 
 class VitGenerator(object):
-    def __init__(self, name_model, patch_size, device, evaluate=True, random=False, verbose=False):
+    def __init__(self, name_model, patch_size, device,num_classes, evaluate=True, random=False, verbose=False):
         self.name_model = name_model
         self.patch_size = patch_size
+        self.num_classes = num_classes
         self.evaluate = evaluate
         self.device = device
         self.verbose = verbose
@@ -279,7 +282,7 @@ class VitGenerator(object):
                                       qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6))
 
         elif self.name_model == 'vit_small':
-            model = VisionTransformer(patch_size=self.patch_size, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4,
+            model = VisionTransformer(patch_size=self.patch_size,num_classes=self.num_classes, embed_dim=384, depth=12, num_heads=6, mlp_ratio=4,
                                       qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6))
 
         elif self.name_model == 'vit_base':

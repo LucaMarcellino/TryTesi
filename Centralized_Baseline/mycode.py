@@ -116,7 +116,7 @@ if args.pre_trained == 0:
 elif args.pre_trained == 1:
     if args.dataset == "cifar10":
         net = VitGenerator(name_model, patch_size, num_classes=10,
-                     evaluate=True, random=False, verbose=True)
+                     evaluate=True, random=False, verbose=True , device = device) 
     elif args.dataset == "cifar100":
             net = VitGenerator(name_model, patch_size, num_classes=100,
                      evaluate=True, random=False, verbose=True)
