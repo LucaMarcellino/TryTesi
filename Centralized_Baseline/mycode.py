@@ -85,7 +85,7 @@ make_it_reproducible(seed)
 g.manual_seed(seed)
 
 trainloader = torch.utils.data.DataLoader(trainset,
-                                    batch_size = 1,#args.batch_size,
+                                    batch_size = args.batch_size,
                                     shuffle = True,
                                     num_workers = 2,
                                     worker_init_fn = seed_worker,
@@ -97,77 +97,16 @@ testloader = torch.utils.data.DataLoader(testset,
                                 worker_init_fn = seed_worker,
                                 generator = g)
 
-image, _ = next(iter(trainloader))
 
-image1 = image[0,:,:,:]
 
 
 name_model = 'vit_small'
 patch_size = 16
 
-net = VitGenerator(name_model, patch_size, 
-                     device, evaluate=True, random=False, verbose=True)
 
 
-def transform(img, img_size):
-    img = transforms.Resize(img_size)(img)
-    img = transforms.ToTensor()(img)
-    return img
 
 
-def visualize_predict(model, img, patch_size, device):
-    #img_pre = transform(img, img_size)
-    attention = visualize_attention(model, img, patch_size, device)
-    plot_attention(img, attention)
-
-
-def visualize_attention(model, img, patch_size, device):
-    # make the image divisible by the patch size
-    w, h = img.shape[1] - img.shape[1] % patch_size, img.shape[2] - \
-        img.shape[2] % patch_size
-    img = img[:, :w, :h].unsqueeze(0)
-
-    w_featmap = img.shape[-2] // patch_size
-    h_featmap = img.shape[-1] // patch_size
-
-    attentions = model.get_last_selfattention(img.to(device))
-
-    nh = attentions.shape[1]  # number of head
-
-    # keep only the output patch attention
-    attentions = attentions[0, :, 0, 1:].reshape(nh, -1)
-
-    attentions = attentions.reshape(nh, w_featmap, h_featmap)
-    attentions = nn.functional.interpolate(attentions.unsqueeze(
-        0), scale_factor=patch_size, mode="nearest")[0].cpu().numpy()
-
-    return attentions
-
-
-def plot_attention(img, attention):
-    n_heads = attention.shape[0]
-
-    plt.figure(figsize=(10, 10))
-    text = ["Original Image", "Head Mean"]
-    for i, fig in enumerate([img, np.mean(attention, 0)]):
-        plt.subplot(1, 2, i+1)
-        plt.imshow(fig, cmap='inferno')
-        plt.title(text[i])
-    plt.savefig("try1.png")
-    plt.show()
-
-    plt.figure(figsize=(10, 10))
-    for i in range(n_heads):
-        plt.subplot(n_heads//3, 3, i+1)
-        plt.imshow(attention[i], cmap='inferno')
-        plt.title(f"Head n: {i+1}")
-    plt.tight_layout()
-    plt.savefig("try.png")
-    plt.show()
-
-visualize_predict(net, image1, patch_size, device)
-
-"""
 if args.pre_trained == 0:
     if args.dataset == "cifar10":
         net = ClientModel(device = device, pretrained=0, num_classes=10)
@@ -175,11 +114,12 @@ if args.pre_trained == 0:
         net = ClientModel(device = device, pretrained=0, num_classes=100)
 
 elif args.pre_trained == 1:
-    net = timm.create_model('vit_small_patch16_224', pretrained=True)
     if args.dataset == "cifar10":
-        net.head = nn.Linear(net.head.in_features, 10)
+        net = VitGenerator(name_model, patch_size, num_classes=10,
+                     evaluate=True, random=False, verbose=True)
     elif args.dataset == "cifar100":
-        net.head = nn.Linear(net.head.in_features, 100)
+            net = VitGenerator(name_model, patch_size, num_classes=100,
+                     evaluate=True, random=False, verbose=True)
 net.to(device)
 
 if opt == "sgd":
@@ -244,7 +184,7 @@ for epoch in tqdm(range(epochs)):
 wandb.finish()
 output_data = pd.DataFrame(output_metrics)
 output_data.to_csv(f"Centralized_ViT_Pretrained:{args.pre_trained}_optimizer:{args.opt}_lr:{args.lr}_mom:{args.momentum}_epochs:{args.epochs}_wd:{args.wd}.csv', index = False.csv", index = False)
-"""
+
 
 
 
