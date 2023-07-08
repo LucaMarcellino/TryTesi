@@ -16,7 +16,7 @@ def parse_args():
                     choices=DATASETS,
                     required=True)
     ## FEDERATED SETTING ##
-    parser.add_argument('--pretrained',
+    parser.add_argument('--pre_trained',
                         help ='0 no pretrained, 1 pretrained',
                         type=int,
                         default=1)

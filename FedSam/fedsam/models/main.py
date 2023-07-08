@@ -298,7 +298,7 @@ def init_wandb(args, alpha=None, run_id=None):
         "clients_per_round":args.clients_per_round
             }
         )
-    job_name = f"Centralized_ViT_Pretrained={args.pre_trained}_optimizer={args.opt}_lr={args.lr}_mom={args.momentum}_epochs={args.epochs}_wd={args.wd}"
+    job_name = f"Federated_Vit_pretrained={args.pre_trained}_lr={args.lr}_mom={args.momentum}_epochs={args.clients_per_round}_wd={args.weight_decay}_alpha={args.alpha}_localbs={args.num_epochs}"
     wandb.run.name = job_name
 
     if os.environ["WANDB_MODE"] != "offline" and not wandb.run.resumed:
