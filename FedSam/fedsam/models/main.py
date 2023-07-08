@@ -302,8 +302,8 @@ def init_wandb(args, alpha=None, run_id=None):
     wandb.run.name = job_name
 
     if os.environ["WANDB_MODE"] != "offline" and not wandb.run.resumed:
-        random_number = wandb.run.name.split('-')[-1]
-        wandb.run.name = job_name + '-' + random_number
+       # random_number = wandb.run.name.split('-')[-1]
+        wandb.run.name = job_name #+ '-' + random_number
         wandb.run.save()
 
     return run, job_name
