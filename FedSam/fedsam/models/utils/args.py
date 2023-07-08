@@ -65,7 +65,7 @@ def parse_args():
     parser.add_argument('--server-momentum',
                         help='momentum for server optimizers;',
                         type=float,
-                        default=0,
+                        default=0.5,
                         required=False)
 
     ## CLIENT TRAINING ##
@@ -95,7 +95,7 @@ def parse_args():
     parser.add_argument('-momentum',
                         help='Client momentum for optimizer',
                         type=float,
-                        default=0)
+                        default=0.5)
     parser.add_argument('-mixup',
                         help='True if use mixup data augmentation at training time',
                         action='store_true',
