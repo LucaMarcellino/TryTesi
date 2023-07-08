@@ -16,6 +16,10 @@ def parse_args():
                     choices=DATASETS,
                     required=True)
     ## FEDERATED SETTING ##
+    parser.add_argument('--pretrained',
+                        help ='0 no pretrained, 1 pretrained',
+                        type=int,
+                        default=1)
     parser.add_argument('--num-rounds',
                         help='number of rounds to simulate;',
                         type=int,

@@ -266,7 +266,7 @@ class ClientModel(nn.Module):
         self.num_classes = num_classes
         self.zero_head = zero_head
         self.classifier = config.classifier
-        self.transformer = timm.create_model('vit_small_patch16_224', pretrained=True)
+        self.transformer = timm.create_model('vit_base_patch16_224', pretrained=True)
         self.transformer.head = nn.Linear(self.transformer.head.in_features, num_classes)
         self.device = device
         self.size = self.model_size()
