@@ -277,59 +277,29 @@ def get_client_and_server(server_path, client_path):
     return Client, Server
 
 def init_wandb(args, alpha=None, run_id=None):
-    group_name = args.algorithm
-    if args.algorithm == 'fedopt':
-        group_name = group_name + '_' + args.server_opt
-
-    configuration = args
-    if alpha is not None:
-        alpha = float(alpha.split('_')[1])
-        if alpha not in [0.05, 0.1, 0.2, 0.5]:
-            alpha = int(alpha)
-        configuration.alpha = alpha
-
-    job_name = 'K' + str(args.clients_per_round) + '_N' + str(args.num_rounds) + '_' + args.model + '_E' + \
-               str(args.num_epochs) + '_clr' + str(args.lr) + '_' + args.algorithm
-    if alpha is not None:
-        job_name = 'alpha' + str(alpha) + '_' + job_name
-
-    if args.server_opt is not None:
-        job_name += '_' + args.server_opt + '_slr' + str(args.server_lr)
-
-    if args.server_momentum > 0:
-        job_name = job_name + '_b' + str(args.server_momentum)
-
-    if args.client_algorithm is not None:
-        job_name = job_name + '_' + args.client_algorithm
-        if args.client_algorithm == 'asam' or args.client_algorithm == 'sam':
-            job_name += '_rho' + str(args.rho)
-            if args.client_algorithm == 'asam':
-                job_name += '_eta' + str(args.eta)
-
-    if args.mixup:
-        job_name += '_mixup' + str(args.mixup_alpha)
-
-    if args.cutout:
-        job_name += '_cutout'
-
-    if args.swa:
-        job_name += '_swa' + (str(args.swa_start) if args.swa_start is not None else '') \
-                    + '_c' + str(args.swa_c) + '_swalr' + str(args.swa_lr)
-
-    if run_id is None:
-        id = wandb.util.generate_id()
-    else:
-        id = run_id
     run = wandb.init(
-                id = id,
-                # Set entity to specify your username or team name
-                entity="marcellinoluca96",
-                # Set the project where this run will be logged
-                project='ViT_' + args.dataset,
-                group=group_name,
-                # Track hyperparameters and run metadata
-                config=configuration,
-                resume="allow")
+        # set the wandb project where this run will be logged
+        
+        entity = "fedvit",
+        project=f"Federated_Avg_{args.dataset}",
+        
+        # track hyperparameters and run metadata
+        config={
+        "alpha": args.alpha,
+        "batch_size": args.batch_size,
+        "local_epochs": args.num_epochs,
+        "pretrained": args.pre_trained,
+        "momentum":args.momentum,
+        "weight decay": args.weight_decay,
+        "learning_rate": args.lr,
+        "architecture": args.model,
+        "dataset": args.dataset,
+        "epochs": args.num_rounds,
+        "clients_per_round":args.clients_per_round
+            }
+        )
+    job_name = f"Centralized_ViT_Pretrained={args.pre_trained}_optimizer={args.opt}_lr={args.lr}_mom={args.momentum}_epochs={args.epochs}_wd={args.wd}"
+    wandb.run.name = job_name
 
     if os.environ["WANDB_MODE"] != "offline" and not wandb.run.resumed:
         random_number = wandb.run.name.split('-')[-1]
