@@ -281,7 +281,7 @@ def init_wandb(args, alpha=None, run_id=None):
         # set the wandb project where this run will be logged
         
         entity = "fedvit",
-        project=f"Federated_Avg_{args.dataset}",
+        project=f"Federated_Avg_VitSmall_{args.dataset}",
         
         # track hyperparameters and run metadata
         config={
